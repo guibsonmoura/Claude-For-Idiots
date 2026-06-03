@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "language": "en",
+  "experience_level": "beginner",
+  "term_mode": "explain",
+  "objective": "a website where people can sign up and post notes",
+  "stack": {
+    "name": "Next.js (React + TypeScript) + Prisma + Postgres",
+    "components": ["next", "react", "typescript", "prisma", "postgres"]
+  },
+  "architecture": {
+    "name": "Next.js feature-folders",
+    "allowed_paths": ["src/**", "tests/**"],
+    "layers": {
+      "src/app": "routes (App Router)",
+      "src/components": "reusable UI",
+      "src/features": "feature-scoped UI + logic",
+      "src/lib": "helpers and clients",
+      "src/server": "server actions / API logic"
+    },
+    "enforce": "ask"
+  },
+  "migrations": {
+    "tool": "prisma",
+    "command": "prisma migrate dev --name <describe_change>",
+    "protected_paths": ["prisma/migrations/**", "alembic/versions/**", "**/migrations/**"]
+  },
+  "tests": {
+    "enabled": true,
+    "unit": true,
+    "integration": true,
+    "feature_test_cmd": "npm test -- <pattern>",
+    "full_suite_cmd": "npm test",
+    "lint_cmd": "npm run lint && npm run typecheck",
+    "run_cmd": "npm run dev"
+  },
+  "git": {
+    "has_repo": false,
+    "remote": null,
+    "publish_requires_confirmation": true
+  },
+  "sanity_check": ["lint", "typecheck", "feature_tests", "smoke"],
+  "glossary_path": ".claude-for-idiots/glossary.json"
+}

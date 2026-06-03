@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Env / secrets — never commit these (Rule 6)
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/

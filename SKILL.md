@@ -1,0 +1,182 @@
+---
+name: claude-for-idiots
+description: >-
+  Guided, guardrailed project setup for both beginners and experienced
+  developers. Use when starting a new project or scaffolding a codebase, when
+  the user asks Claude to follow a fixed architecture and strict engineering
+  rules (never hand-edit migrations, always write tests, commit per feature,
+  sanity check after each feature, keep secrets out of git), or to set up or
+  change the guided configuration of a project. Adapts every explanation to the
+  user's experience level and preferred use of technical terms. Note: day-to-day
+  rule enforcement does NOT depend on this skill staying loaded — onboarding
+  writes a CLAUDE.md (auto-loaded every session) plus hooks that enforce the
+  rules technically.
+---
+
+# Claude for Idiots
+
+A setup-and-guardrails skill. It runs a short onboarding, then writes
+**persistent artifacts** into the target project so the rules keep applying in
+every future session — even after the skill itself drops out of context.
+
+The skill is the *installer*. The real enforcement lives in the files it writes:
+
+| Artifact | Path (in the user's project) | Purpose |
+|---|---|---|
+| Rules + profile | `CLAUDE.md` | Loaded automatically every session. Source of truth for behavior. |
+| Config | `.claude-for-idiots/config.json` | Machine-readable answers from onboarding. Read by the hooks. |
+| Glossary | `.claude-for-idiots/glossary.json` | Tracks which terms were explained and the user's growing level. |
+| Hooks | `.claude/hooks/*.py` | Technically enforce Rules 1, 5 and 6 (block, not just promise). |
+| Hook wiring | `.claude/settings.json` | Registers the hooks as `PreToolUse`. |
+
+> Design principle: **everything is meant to be edited and upgraded.** The
+> stacks, architectures, and rule text all live in `references/` as data, not
+> baked into prose. Add a new stack or architecture by editing a catalog file —
+> not by rewriting this skill.
+
+---
+
+## Step 0 — Already set up?
+
+When this skill runs, check the working directory for `.claude-for-idiots/config.json`.
+
+- **If it exists:** onboarding is done. Read it (and `CLAUDE.md`), adopt the
+  recorded language, experience level, and term mode, and just keep working
+  under the rules. Do **not** re-run onboarding.
+- **If it does not exist:** run onboarding (below).
+
+> **How persistence actually works (important):** Claude invokes this skill only
+> when the *task* matches its description (e.g. "start a project") — it does NOT
+> auto-load every session, and it does NOT scan the disk for the config. The
+> thing that keeps the rules and profile alive in every session is the
+> **`CLAUDE.md`** this skill writes, which Claude Code auto-loads on entering the
+> directory. The hooks enforce rules 1/5/6 regardless. So: this skill sets things
+> up; `CLAUDE.md` + hooks do the day-to-day work. Re-invoke this skill only to
+> create or change a project's configuration.
+
+---
+
+## Step 1 — Onboarding
+
+Ask the questions in `references/onboarding-flow.md`. Summary:
+
+1. **Interaction language** — what language should Claude speak to the user in?
+   (Default: English. The skill's own files stay in English regardless.)
+2. **Experience level** — `beginner` | `intermediate` | `advanced`. This drives
+   the defaults for everything below.
+3. **Use of technical terms** — `none` | `explain` | `raw`
+   (see "Technical-term modes" below). Default is taken from experience level.
+4. **Project objective** — what does the user want to build? Needed to pick a
+   stack automatically.
+5. **Stack & architecture** — `advanced` users choose; `beginner`/`intermediate`
+   let Claude derive it from the objective (see Step 2).
+6. **Version control** — *auto-detect*, don't ask blindly: is there a `.git`?
+   a remote? If there is none and the user is a beginner, offer to set up Git
+   and **explain in plain language what Git is** before doing it.
+7. **Tests** — on by default. If a beginner wants them off, first explain why
+   they matter (catching breakage early), then respect the choice.
+
+Keep onboarding short and in the user's language. Let the experience level
+pre-fill answers so a beginner answers as few questions as possible.
+
+---
+
+## Step 2 — Derive stack & architecture
+
+The whole philosophy: **architecture is a function of `(stack, objective, scale)`
+and is always idiomatic to the chosen stack.** There is no single universal
+architecture (MVVM, Clean, etc.) — forcing one onto every project would violate
+the very rule we want to enforce.
+
+1. Map the objective → a recommended stack using `references/stack-catalog.md`.
+2. Map the stack → its idiomatic architecture using
+   `references/architecture-catalog.md` (folder layout, layer responsibilities,
+   and suggested `allowed_paths`).
+3. Scale the depth to the project size. A 200-line tool should **not** get
+   enterprise layering — over-engineering is also "making a mess".
+4. Present it by experience level:
+   - **beginner** → pick it, explain in one simple sentence, proceed.
+   - **intermediate** → propose the idiomatic option + a short rationale; allow override.
+   - **advanced** → the user drives; Claude respects their choice.
+
+Once chosen, the architecture is **frozen and written explicitly into
+`CLAUDE.md` and the config** — variable *across* projects, fixed *within* a
+project. That written structure is what Rule 5 (and its hook) enforces.
+
+---
+
+## Step 3 — Write the project artifacts
+
+After stack/architecture are settled:
+
+1. Fill `assets/CLAUDE.template.md` with the chosen values and write it to
+   `<project>/CLAUDE.md` (merge, don't clobber, if one already exists).
+2. Write `<project>/.claude-for-idiots/config.json` using
+   `assets/config.example.json` as the shape. Fill `migrations`,
+   `architecture.allowed_paths`, `tests`, etc. — the hooks read these.
+3. Create `<project>/.claude/hooks/` and copy the three scripts from this
+   skill's `hooks/` directory into it.
+4. Merge `assets/settings.template.json` into `<project>/.claude/settings.json`
+   (preserve any existing hooks/keys).
+5. Initialize `<project>/.claude-for-idiots/glossary.json` (see
+   `references/glossary-format.md`) only when term mode is `explain`.
+6. Ensure `.env` is gitignored and a `.env.example` exists (Rule 6).
+
+Then confirm to the user, in their language, what was set up.
+
+---
+
+## The rules (source of truth: `references/rules.md`)
+
+1. **Never hand-edit migration files.** Change the models/schema and run the
+   library's generator (e.g. `alembic revision --autogenerate`). *(Hook-enforced.)*
+2. **Always have tests** — unit + integration, front and back. On by default.
+   A beginner may disable them only after being told why they matter. Run only
+   the relevant tests during a feature; **ask before running the full suite.**
+3. **Commit per feature** when a version control system exists, so progress is
+   never lost.
+4. **Sanity check after each feature:** lint + type-check → the feature's tests
+   → smoke test (boot the app and verify it responds). Build is covered by the
+   smoke test.
+5. **Keep new files inside the chosen architecture.** *(Hook-enforced.)*
+6. **Secrets never reach the remote.** Keys/tokens/passwords live in a
+   gitignored `.env` with a committed `.env.example`. Local Git is free; any
+   *publishing* action (push, create remote repo, make public, open PR) must be
+   confirmed by the user **and** pass a secret scan first. *(Hook-enforced.)*
+
+---
+
+## Technical-term modes
+
+| Mode | Behavior | Glossary? |
+|---|---|---|
+| `none` | Never use jargon. Always paraphrase (e.g. say "blocking requests from one domain to another" instead of "CORS"). | No |
+| `explain` | Use the term, then explain it briefly right after, ramping from simple to advanced **as the user's understanding grows**. The glossary records what was explained and at what depth, so explanations level up over time and don't repeat needlessly. | Yes |
+| `raw` | Use terms normally, no explanations. The user just wants the guardrails, not the teaching. | No |
+
+`none` is the hardest to do well — always find the plain-language paraphrase.
+See `references/glossary-format.md` for how the `explain` glossary works.
+
+---
+
+## Runtime behavior recap
+
+- Commit after each working feature (Rule 3) with a clear message.
+- After each feature, run the sanity check (Rule 4).
+- Run only relevant tests during work; **ask permission before the full suite** (Rule 2).
+- Before any publishing action, confirm with the user and let the secret-scan
+  hook run (Rule 6).
+- Speak in the configured language; honor the term mode on every message.
+
+---
+
+## Extending this skill
+
+- **New stack / objective mapping** → edit `references/stack-catalog.md`.
+- **New architecture / folder layout** → edit `references/architecture-catalog.md`.
+- **Change a rule's wording** → edit `references/rules.md` (and the template).
+- **New guardrail** → add a hook in `hooks/`, wire it in
+  `assets/settings.template.json`, add its config keys to
+  `assets/config.example.json`.
+
+Bump `CHANGELOG.md` when you change behavior.
