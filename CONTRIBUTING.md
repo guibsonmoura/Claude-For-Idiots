@@ -44,21 +44,29 @@ Edit `references/rules.md` (the source of truth) **and**
 
 ## Testing your changes
 
-Hooks are plain scripts you can drive with a fake event on stdin:
+Run the hook test suite (standard library only — also runs in CI on every PR):
 
 ```bash
 python3 -m py_compile hooks/*.py   # must pass
-
-echo '{"cwd":".","tool_name":"Edit","tool_input":{"file_path":"alembic/versions/x.py"}}' \
-  | python3 hooks/block_migration_edits.py   # should print a deny (with config present)
+python3 tests/test_hooks.py        # must pass
 ```
 
-Test the three scenarios for any hook you touch: **should block**, **should
-allow**, and **no config → allow**.
+Add a test case in `tests/test_hooks.py` whenever you add or change hook
+behavior. Every hook must keep covering the three contract scenarios:
+**should block**, **should allow**, and **no config → allow** (fail open).
+
+For quick manual poking, hooks are plain scripts that read one JSON event on
+stdin:
+
+```bash
+echo '{"cwd":".","tool_name":"Edit","tool_input":{"file_path":"alembic/versions/x.py"}}' \
+  | python3 hooks/block_migration_edits.py   # prints a deny (with config present)
+```
 
 ## Pull request checklist
 
-- [ ] `python3 -m py_compile hooks/*.py` passes.
+- [ ] `python3 -m py_compile hooks/*.py` and `python3 tests/test_hooks.py` pass.
+- [ ] New/changed hook behavior comes with a test case in `tests/test_hooks.py`.
 - [ ] New stack/architecture rows include `allowed_paths` and layer responsibilities.
 - [ ] Rule changes are mirrored in `references/rules.md` and `assets/CLAUDE.template.md`.
 - [ ] Hooks still fail open with no config.

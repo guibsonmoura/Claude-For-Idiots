@@ -32,6 +32,7 @@
     "feature_test_cmd": "npm test -- <pattern>",
     "full_suite_cmd": "npm test",
     "lint_cmd": "npm run lint && npm run typecheck",
+    "format_cmd": "npx prettier --write .",
     "run_cmd": "npm run dev"
   },
   "git": {
@@ -40,5 +41,6 @@
     "publish_requires_confirmation": true
   },
   "sanity_check": ["lint", "typecheck", "feature_tests", "smoke"],
+  "docs_index": "docs/INDEX.md",
   "glossary_path": ".claude-for-idiots/glossary.json"
 }

@@ -47,6 +47,13 @@ Auto-detect first: is there a `.git`? a remote (`git remote -v`)?
 On by default. If a beginner asks to disable, first explain why tests matter,
 then respect the choice and record it.
 
+## Q7 — Browser verification (web projects only)
+Auto-detect: are browser-automation tools available (e.g. Playwright MCP,
+`mcp__playwright__*`)? If yes, just record it. If not, **offer** to set it up —
+for a beginner, in plain language: "a tool that lets me see your site like you
+do, including hidden errors". Never install without asking. See
+`references/browser-verification.md`.
+
 ---
 
 After collecting answers, do Step 3 of SKILL.md (write the artifacts) and

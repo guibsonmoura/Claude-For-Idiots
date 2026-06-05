@@ -1,5 +1,4 @@
 {
-  "//": "Merge into <project>/.claude/settings.json. Preserve any existing keys/hooks.",
   "hooks": {
     "PreToolUse": [
       {

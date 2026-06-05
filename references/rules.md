@@ -49,6 +49,10 @@ After implementing a feature, verify you didn't break anything:
 
 (A successful smoke test implies a successful build.)
 
+For web projects, when browser-automation tools are available (see
+`references/browser-verification.md`), the smoke test also loads the page and
+reads the **browser console** — console errors fail the check.
+
 ## Rule 5 — Keep new files inside the chosen architecture **[hook]**
 
 Every new code file must land in the layer/folder defined by the project's
@@ -68,3 +72,47 @@ creating a remote repo, making a repo public, opening a PR — must:
 
 The worst possible accident for a beginner is publishing a public repo with a
 live API key inside. This rule exists to make that impossible.
+
+## Rule 7 — Reuse before you build
+
+Before implementing a feature, look for something that already does it (or
+nearly does): search the codebase and skim `docs/INDEX.md`. Extend or reuse
+instead of duplicating. If something similar exists but genuinely can't be
+reused, say why in one line before writing the new thing.
+
+## Rule 8 — Hard-won knowledge lives in `docs/`, not in CLAUDE.md
+
+`CLAUDE.md` is loaded every session — permanent context cost — so it must stay
+short. Long-form knowledge goes in `docs/` as individual files, with at most a
+one-line pointer in `CLAUDE.md`:
+
+- architecture decisions (small ADRs: context → decision → consequences — see
+  `assets/ADR.template.md`),
+- bug investigations that cost real time,
+- quirks of external API integrations.
+
+Consult `docs/INDEX.md` when a task touches a documented area; write a new doc
+(and index it) when you make a real architectural decision or close a costly
+investigation. Keep it lightweight: a small project may go a long time with an
+empty index — that's fine. Never write an ADR for a trivial choice.
+
+Think in three layers: **always loaded** (`CLAUDE.md` — short), **on demand**
+(`docs/`, config, glossary — deep, but zero cost until needed), **discovered
+live** (the code and tests themselves).
+
+## Rule 9 — Two failed fixes → stop guessing, research
+
+If two attempts to fix the **same** problem have failed (the user reports it
+still broken a second time), do NOT try a third variation of the same guess.
+Escalate instead:
+
+1. Re-read the **complete** error message/logs — slowly, top to bottom.
+2. Check installed versions against the docs — version mismatch is the #1 cause
+   of "mysterious" failures.
+3. **Search the web deeply** (when web access is available): official docs,
+   GitHub issues, changelogs — search for the exact error text.
+4. Only then touch code again, with a genuinely **new** hypothesis.
+
+If the investigation ends up costing real time, record it in
+`docs/investigations/` with an index line (Rule 8) — the same bug is never paid
+for twice.

@@ -2,15 +2,15 @@
 name: claude-for-idiots
 description: >-
   Guided, guardrailed project setup for both beginners and experienced
-  developers. Use when starting a new project or scaffolding a codebase, when
-  the user asks Claude to follow a fixed architecture and strict engineering
-  rules (never hand-edit migrations, always write tests, commit per feature,
-  sanity check after each feature, keep secrets out of git), or to set up or
-  change the guided configuration of a project. Adapts every explanation to the
-  user's experience level and preferred use of technical terms. Note: day-to-day
-  rule enforcement does NOT depend on this skill staying loaded — onboarding
-  writes a CLAUDE.md (auto-loaded every session) plus hooks that enforce the
-  rules technically.
+  developers. Prefer EXPLICIT invocation: use when the user runs
+  /claude-for-idiots or explicitly asks to start a guided, beginner-friendly,
+  guardrailed setup (fixed architecture, always tests, commit per feature,
+  sanity checks, never hand-edit migrations, never leak secrets). Do NOT
+  auto-apply to every new project — many projects (throwaway scripts, existing
+  codebases with their own conventions) should be left alone unless the user
+  opts in. Adapts explanations to the user's experience level and preferred use
+  of technical terms. Day-to-day enforcement lives in a generated CLAUDE.md plus
+  hooks, not in this skill staying loaded.
 ---
 
 # Claude for Idiots
@@ -28,6 +28,7 @@ The skill is the *installer*. The real enforcement lives in the files it writes:
 | Glossary | `.claude-for-idiots/glossary.json` | Tracks which terms were explained and the user's growing level. |
 | Hooks | `.claude/hooks/*.py` | Technically enforce Rules 1, 5 and 6 (block, not just promise). |
 | Hook wiring | `.claude/settings.json` | Registers the hooks as `PreToolUse`. |
+| Knowledge base | `docs/INDEX.md` | Long-term memory on demand: ADRs, bug investigations, API quirks. |
 
 > Design principle: **everything is meant to be edited and upgraded.** The
 > stacks, architectures, and rule text all live in `references/` as data, not
@@ -121,6 +122,15 @@ After stack/architecture are settled:
 5. Initialize `<project>/.claude-for-idiots/glossary.json` (see
    `references/glossary-format.md`) only when term mode is `explain`.
 6. Ensure `.env` is gitignored and a `.env.example` exists (Rule 6).
+7. Install the stack's quality tooling (formatter / linter / type-checker) per
+   `references/quality-tools.md` and fill `tests.lint_cmd` / `tests.format_cmd`.
+   No question needed — on by default.
+8. Create `docs/` with an `INDEX.md` from `assets/docs-INDEX.template.md`
+   (Rule 8). For beginners, explain it in one sentence: "this folder is the
+   project's long-term memory."
+9. For web projects: check whether browser-automation tools (e.g. Playwright
+   MCP) are available; if not, **offer** to set them up — see
+   `references/browser-verification.md`. Never install without asking.
 
 Then confirm to the user, in their language, what was set up.
 
@@ -143,6 +153,13 @@ Then confirm to the user, in their language, what was set up.
    gitignored `.env` with a committed `.env.example`. Local Git is free; any
    *publishing* action (push, create remote repo, make public, open PR) must be
    confirmed by the user **and** pass a secret scan first. *(Hook-enforced.)*
+7. **Reuse before you build.** Search the codebase and `docs/INDEX.md` before
+   implementing something new; extend instead of duplicating.
+8. **Hard-won knowledge lives in `docs/`.** ADRs, costly bug investigations and
+   API quirks go in `docs/` with one-line pointers in `CLAUDE.md` — never essays.
+9. **Two failed fixes → stop guessing, research.** Re-read the full error, check
+   versions, search the web deeply, then retry with a genuinely new hypothesis.
+   Costly investigations become docs (Rule 8).
 
 ---
 
@@ -166,6 +183,15 @@ See `references/glossary-format.md` for how the `explain` glossary works.
 - Run only relevant tests during work; **ask permission before the full suite** (Rule 2).
 - Before any publishing action, confirm with the user and let the secret-scan
   hook run (Rule 6).
+- Before starting a feature, look for existing code to reuse and skim
+  `docs/INDEX.md` (Rule 7).
+- Record real architecture decisions and costly investigations in `docs/`, one
+  index line each (Rule 8).
+- If two fixes for the same problem failed: stop guessing — re-read the full
+  error, check versions, search the web deeply, then try a NEW hypothesis
+  (Rule 9).
+- For web smoke tests, read the browser console when browser tools are
+  available (`references/browser-verification.md`).
 - Speak in the configured language; honor the term mode on every message.
 
 ---
@@ -175,6 +201,7 @@ See `references/glossary-format.md` for how the `explain` glossary works.
 - **New stack / objective mapping** → edit `references/stack-catalog.md`.
 - **New architecture / folder layout** → edit `references/architecture-catalog.md`.
 - **Change a rule's wording** → edit `references/rules.md` (and the template).
+- **Change quality tooling defaults** → edit `references/quality-tools.md`.
 - **New guardrail** → add a hook in `hooks/`, wire it in
   `assets/settings.template.json`, add its config keys to
   `assets/config.example.json`.

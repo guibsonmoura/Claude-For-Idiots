@@ -5,6 +5,41 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.2.0] — 2026-06-05
+### Added
+- Portuguese README (`README.pt-br.md`) with a language switcher in both READMEs.
+- Quality-tooling catalog (`references/quality-tools.md`) — setup now installs
+  the stack's formatter/linter/type-checker by default (Python default: ruff,
+  with pylint as a documented alternative).
+- Rule 7 (reuse before you build) and Rule 8 (hard-won knowledge lives in
+  `docs/`, three context layers: always loaded / on demand / discovered live).
+- `docs/` scaffolding templates: `assets/docs-INDEX.template.md` and
+  `assets/ADR.template.md`.
+- Rule 9 (debugging escalation): after two failed fixes for the same problem,
+  stop guessing — re-read the full error, check versions, research the web
+  deeply, then retry with a genuinely new hypothesis.
+- Browser-verification guide (`references/browser-verification.md`): web smoke
+  tests read the browser console via Playwright MCP when available, degrade
+  gracefully when not; setup offers to configure it (never installs unasked).
+- Hook test suite (`tests/test_hooks.py`, 16 cases, stdlib only) covering
+  block / allow / fail-open for all three hooks.
+- GitHub Actions CI (`.github/workflows/ci.yml`): compiles hooks and runs the
+  test suite on every push and pull request.
+
+### Fixed
+- Removed the non-standard `"//"` comment key from `assets/settings.template.json`
+  (the merge instructions live in SKILL.md Step 3).
+
+### Changed
+- README rewritten for non-technical readers: plain-language intro, the original
+  motivation, how to use, and what it improves.
+- Skill is now explicit-invocation first (`/claude-for-idiots`); its description
+  no longer aims to auto-apply to every new project.
+- READMEs: new "Should you use it on your project?" section (sweet spot vs
+  over-engineering), setup-time note (~10 minutes measured on Opus 4.8),
+  auto-mode recommendation for beginners during setup, and a
+  not-yet-tested-for-deployment disclaimer.
+
 ## [0.1.0] — initial skeleton
 ### Added
 - `SKILL.md` — onboarding flow, stack/architecture derivation, rules, term modes.

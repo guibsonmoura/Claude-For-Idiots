@@ -22,6 +22,14 @@
 - Full machine-readable config (also read by the enforcement hooks) lives in
   `.claude-for-idiots/config.json`.
 
+## Knowledge & reuse
+- **Before building a feature:** search the codebase for something to reuse and
+  skim `docs/INDEX.md` (Rule 7). Extend instead of duplicating.
+- **Long-form knowledge lives in `docs/`** — decisions (ADRs), costly bug
+  investigations, external API quirks. Read it when the task touches those
+  areas; write a new doc + index line when you decide or discover something
+  expensive. Keep THIS file short — pointers, not essays (Rule 8).
+
 ## Stack
 {{STACK_SUMMARY}}
 
@@ -47,17 +55,28 @@ architecture, update this section AND `.claude-for-idiots/config.json` first.
    Tests enabled: {{TESTS_ENABLED}}.
 3. **Commit per feature** with a clear message ({{VCS_STATUS}}).
 4. **Sanity check after each feature:** lint + type-check → the feature's tests
-   → smoke test (boot the app and verify it responds).
+   → smoke test (boot the app and verify it responds; for web apps, also read
+   the browser console when browser tools are available — console errors fail
+   the check).
 5. **Keep new files inside the architecture above.**
 6. **Secrets never reach the remote.** Keys/tokens/passwords live in a
    gitignored `.env` (with a committed `.env.example`). Local Git is free; any
    publishing action (push, create remote repo, make public, open PR) requires
    my explicit confirmation AND passes a secret scan first.
+7. **Reuse before you build.** Search the codebase and `docs/INDEX.md` before
+   implementing something new; extend instead of duplicating.
+8. **Hard-won knowledge goes in `docs/`** (ADRs, bug investigations, API
+   quirks), with one-line pointers here — never essays.
+9. **Two failed fixes → stop guessing.** Re-read the complete error, check
+   installed versions vs docs, search the web deeply for the exact error, and
+   only then retry with a genuinely new hypothesis. Costly investigations get a
+   doc in `docs/investigations/`.
 
 ## Commands
 - Relevant tests (per feature): `{{FEATURE_TEST_CMD}}`
 - Full suite (ask first): `{{FULL_SUITE_CMD}}`
 - Lint / type-check: `{{LINT_CMD}}`
+- Format: `{{FORMAT_CMD}}`
 - Run app (smoke test): `{{RUN_CMD}}`
 
 > Config: `.claude-for-idiots/config.json`. Rules 1, 5, 6 are also enforced by
