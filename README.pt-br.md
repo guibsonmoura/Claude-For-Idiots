@@ -98,6 +98,16 @@ tudo pra aquele projeto.
 > - **Ainda não testada para deploy** — a skill cobre o desenvolvimento local;
 >   fluxos de publicação em produção estão no roadmap.
 
+### 3. Atualizar (quando sair versão nova)
+
+```
+/claude-for-idiots update
+```
+
+Atualiza a própria skill e — se o projeto atual foi configurado por ela — traz
+os guard-rails do projeto pra versão nova também, **mantendo todas as suas
+escolhas**. Ele te conta o que mudou antes de tocar em qualquer coisa.
+
 ## O que ele melhora
 
 Depois da configuração, o Claude segue isto em **toda** sessão daquele projeto. Os
@@ -151,6 +161,7 @@ references/                  # dados editáveis — estenda a skill aqui
   glossary-format.md         #   como funciona o dicionário do modo "explain"
   quality-tools.md           #   formatador/linter/type-checker por stack
   browser-verification.md    #   smoke test web com navegador de verdade
+  update-flow.md             #   como o /claude-for-idiots update funciona
 assets/                      # o que é escrito no seu projeto
   CLAUDE.template.md
   config.example.json

@@ -3,9 +3,10 @@ name: claude-for-idiots
 description: >-
   Guided, guardrailed project setup for both beginners and experienced
   developers. Prefer EXPLICIT invocation: use when the user runs
-  /claude-for-idiots or explicitly asks to start a guided, beginner-friendly,
-  guardrailed setup (fixed architecture, always tests, commit per feature,
-  sanity checks, never hand-edit migrations, never leak secrets). Do NOT
+  /claude-for-idiots (or "/claude-for-idiots update") or explicitly asks to
+  start a guided, beginner-friendly, guardrailed setup (fixed architecture,
+  always tests, commit per feature, sanity checks, never hand-edit migrations,
+  never leak secrets) — or to update the skill / a configured project. Do NOT
   auto-apply to every new project — many projects (throwaway scripts, existing
   codebases with their own conventions) should be left alone unless the user
   opts in. Adapts explanations to the user's experience level and preferred use
@@ -38,6 +39,10 @@ The skill is the *installer*. The real enforcement lives in the files it writes:
 ---
 
 ## Step 0 — Already set up?
+
+**If the skill was invoked with the argument `update`** (e.g.
+`/claude-for-idiots update`) or the user asked to update: skip everything below
+and follow the **Updating** section instead.
 
 When this skill runs, check the working directory for `.claude-for-idiots/config.json`.
 
@@ -114,7 +119,9 @@ After stack/architecture are settled:
    `<project>/CLAUDE.md` (merge, don't clobber, if one already exists).
 2. Write `<project>/.claude-for-idiots/config.json` using
    `assets/config.example.json` as the shape. Fill `migrations`,
-   `architecture.allowed_paths`, `tests`, etc. — the hooks read these.
+   `architecture.allowed_paths`, `tests`, etc. — the hooks read these. Record
+   `skill_version` from this skill's `VERSION` file (updates use it to know
+   where the project is starting from).
 3. Create `<project>/.claude/hooks/` and copy the three scripts from this
    skill's `hooks/` directory into it.
 4. Merge `assets/settings.template.json` into `<project>/.claude/settings.json`
@@ -141,6 +148,22 @@ After stack/architecture are settled:
 > during the **first sanity check** and fix `CLAUDE.md` if it landed elsewhere.
 
 Then confirm to the user, in their language, what was set up.
+
+---
+
+## Updating — `/claude-for-idiots update`
+
+When invoked with the argument `update` (or the user asks to update), skip
+onboarding and follow `references/update-flow.md`:
+
+1. **Update the skill install** (`git pull` if it's a clone, fresh download
+   otherwise) and report old → new version from the `VERSION` file.
+2. **Update the current project**, if it has a `.claude-for-idiots/config.json`:
+   summarize what's new (from `CHANGELOG.md`, in the user's language), refresh
+   the hooks, merge new rules into `CLAUDE.md`, add new config fields —
+   **preserving every onboarding choice and verified project fact** — then set
+   `skill_version` to the current version.
+3. Remind the user to restart the session so updated hooks/skill take effect.
 
 ---
 

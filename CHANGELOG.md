@@ -5,6 +5,17 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.3.0] — 2026-06-05
+### Added
+- Update flow (`/claude-for-idiots update`, `references/update-flow.md`):
+  updates the skill install (git pull or fresh download) and brings
+  already-configured projects up to date — refreshes hooks, merges new rules
+  into `CLAUDE.md`, adds new config fields — while preserving every onboarding
+  choice and verified project fact. Summarizes what changed (from this
+  changelog, in the user's language) before touching anything.
+- `VERSION` file at the repo root; setup now records `skill_version` in each
+  project's config so updates know where the project is starting from.
+
 ## [0.2.1] — 2026-06-05
 ### Fixed
 - Setup must now **verify** facts (paths, ports, commands) against the real
