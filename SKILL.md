@@ -132,6 +132,14 @@ After stack/architecture are settled:
    MCP) are available; if not, **offer** to set them up — see
    `references/browser-verification.md`. Never install without asking.
 
+> **Facts must be verified, never assumed.** Before writing any concrete fact
+> into `CLAUDE.md` or the config (a path, a port, a command), check it against
+> the real project (`ls`, read the actual config files). Never write a path
+> "from memory" — e.g. a Prisma SQLite file may live at `prisma/dev.db` *or* at
+> the project root depending on configuration. If the artifact doesn't exist
+> yet (a database file only appears after the first migration), verify it
+> during the **first sanity check** and fix `CLAUDE.md` if it landed elsewhere.
+
 Then confirm to the user, in their language, what was set up.
 
 ---

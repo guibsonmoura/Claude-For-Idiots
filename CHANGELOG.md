@@ -5,6 +5,18 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.2.1] — 2026-06-05
+### Fixed
+- Setup must now **verify** facts (paths, ports, commands) against the real
+  project before writing them into `CLAUDE.md`/config — never from memory.
+  Found in field testing: the database path was written as `prisma/dev.db`
+  while the file actually lived at the project root. Facts about artifacts that
+  don't exist yet are re-checked during the first sanity check.
+- Generated `CLAUDE.md` now states that its facts are documentation, not law:
+  Claude must fix them immediately when they turn out wrong (only the rules
+  need the user's consent to change). Prevents the model from refusing to
+  correct its own instructions file.
+
 ## [0.2.0] — 2026-06-05
 ### Added
 - Portuguese README (`README.pt-br.md`) with a language switcher in both READMEs.

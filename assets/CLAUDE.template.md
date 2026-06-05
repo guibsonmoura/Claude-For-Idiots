@@ -79,5 +79,11 @@ architecture, update this section AND `.claude-for-idiots/config.json` first.
 - Format: `{{FORMAT_CMD}}`
 - Run app (smoke test): `{{RUN_CMD}}`
 
+## Keeping this file accurate
+The facts in this file (paths, ports, commands) are **documentation, not law**.
+When one turns out to be wrong or changes, **fix it here immediately** — you are
+allowed and expected to edit this file. Only the **rules** above require the
+user's consent to change.
+
 > Config: `.claude-for-idiots/config.json`. Rules 1, 5, 6 are also enforced by
 > hooks in `.claude/hooks/` — they will block violations, not just warn.
