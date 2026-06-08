@@ -8,6 +8,64 @@
 
 ---
 
+## How to use
+
+### 1. Install (once)
+
+**Requirements:** Python 3 and [Claude Code](https://claude.com/claude-code).
+
+**macOS / Linux**
+```bash
+git clone https://github.com/JulioBarbosaS/Claude-For-Idiots.git
+cp -r Claude-For-Idiots ~/.claude/skills/claude-for-idiots
+```
+
+**Windows (PowerShell)**
+```powershell
+git clone https://github.com/JulioBarbosaS/Claude-For-Idiots.git
+Copy-Item -Recurse Claude-For-Idiots "$env:USERPROFILE\.claude\skills\claude-for-idiots"
+```
+
+Then restart Claude Code so it picks up the new skill.
+
+### 2. Turn it on — explicitly
+
+In a Claude Code session, run:
+
+```
+/claude-for-idiots
+```
+
+**It only runs when you ask for it — on purpose.** Not every project should be
+wrapped in these guard-rails: a quick throwaway script, or an existing codebase
+that already has its own conventions, are usually better left alone. So this
+skill **never takes over by itself** — you switch it on, per project, when you
+actually want it.
+
+Once it's on, it asks a few quick questions — your language, your experience
+level, whether to use technical terms, and what you want to build — and sets
+everything up for that project.
+
+> **Heads-up:**
+> - The guided setup takes **~10 minutes** (measured on Opus 4.8) — it asks the
+>   questions, picks the stack, installs the tooling and writes the guard-rails.
+> - **Beginners:** run Claude Code in **auto mode** (auto-accept permissions)
+>   during setup, so you're not interrupted by a permission prompt at every step.
+> - **Not yet tested for deployment** — the skill covers local development;
+>   deploy workflows are on the roadmap.
+
+### 3. Update (when a new version lands)
+
+```
+/claude-for-idiots update
+```
+
+Updates the skill itself and — if the current project was configured by it —
+brings the project's guard-rails up to date too, **keeping all your choices**.
+It tells you what changed before touching anything.
+
+---
+
 ## What is this? (in plain words)
 
 You're building something with Claude Code, but:
@@ -72,62 +130,6 @@ and commits on every feature — so they have to buy you more than they cost.
 Rule of thumb: **if the project will still matter in two weeks, turn it on; if
 it's disposable, don't.** That's also why it only runs when you invoke it
 explicitly.
-
-## How to use
-
-### 1. Install (once)
-
-**Requirements:** Python 3 and [Claude Code](https://claude.com/claude-code).
-
-**macOS / Linux**
-```bash
-git clone https://github.com/JulioBarbosaS/Claude-For-Idiots.git
-cp -r Claude-For-Idiots ~/.claude/skills/claude-for-idiots
-```
-
-**Windows (PowerShell)**
-```powershell
-git clone https://github.com/JulioBarbosaS/Claude-For-Idiots.git
-Copy-Item -Recurse Claude-For-Idiots "$env:USERPROFILE\.claude\skills\claude-for-idiots"
-```
-
-Then restart Claude Code so it picks up the new skill.
-
-### 2. Turn it on — explicitly
-
-In a Claude Code session, run:
-
-```
-/claude-for-idiots
-```
-
-**It only runs when you ask for it — on purpose.** Not every project should be
-wrapped in these guard-rails: a quick throwaway script, or an existing codebase
-that already has its own conventions, are usually better left alone. So this
-skill **never takes over by itself** — you switch it on, per project, when you
-actually want it.
-
-Once it's on, it asks a few quick questions — your language, your experience
-level, whether to use technical terms, and what you want to build — and sets
-everything up for that project.
-
-> **Heads-up:**
-> - The guided setup takes **~10 minutes** (measured on Opus 4.8) — it asks the
->   questions, picks the stack, installs the tooling and writes the guard-rails.
-> - **Beginners:** run Claude Code in **auto mode** (auto-accept permissions)
->   during setup, so you're not interrupted by a permission prompt at every step.
-> - **Not yet tested for deployment** — the skill covers local development;
->   deploy workflows are on the roadmap.
-
-### 3. Update (when a new version lands)
-
-```
-/claude-for-idiots update
-```
-
-Updates the skill itself and — if the current project was configured by it —
-brings the project's guard-rails up to date too, **keeping all your choices**.
-It tells you what changed before touching anything.
 
 ## What it improves
 
