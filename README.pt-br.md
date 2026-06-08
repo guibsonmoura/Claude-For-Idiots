@@ -8,6 +8,65 @@
 
 ---
 
+## Como usar
+
+### 1. Instalar (uma vez)
+
+**Requisitos:** Python 3 e [Claude Code](https://claude.com/claude-code).
+
+**macOS / Linux**
+```bash
+git clone https://github.com/JulioBarbosaS/Claude-For-Idiots.git
+cp -r Claude-For-Idiots ~/.claude/skills/claude-for-idiots
+```
+
+**Windows (PowerShell)**
+```powershell
+git clone https://github.com/JulioBarbosaS/Claude-For-Idiots.git
+Copy-Item -Recurse Claude-For-Idiots "$env:USERPROFILE\.claude\skills\claude-for-idiots"
+```
+
+Depois reinicie o Claude Code pra ele reconhecer a nova skill.
+
+### 2. Ligar — de forma explícita
+
+Numa sessão do Claude Code, rode:
+
+```
+/claude-for-idiots
+```
+
+**Ela só roda quando você pede — de propósito.** Nem todo projeto deve ser
+embrulhado nesses guard-rails: um script descartável e rápido, ou um projeto que
+já existe e tem suas próprias convenções, geralmente é melhor deixar em paz. Por
+isso a skill **nunca assume o controle sozinha** — você liga ela, por projeto,
+quando realmente quer.
+
+Depois de ligada, ela faz algumas perguntas rápidas — seu idioma, seu nível de
+experiência, se deve usar termos técnicos, e o que você quer construir — e prepara
+tudo pra aquele projeto.
+
+> **Atenção:**
+> - A configuração guiada leva **~10 minutos** (medido no Opus 4.8) — ela faz as
+>   perguntas, escolhe a stack, instala as ferramentas e escreve os guard-rails.
+> - **Iniciantes:** rodem o Claude Code em **auto mode** (aceitação automática de
+>   permissões) durante o setup, pra não serem interrompidos por prompt de
+>   permissão a cada passo.
+> - **Ainda não testada para deploy** — a skill cobre o desenvolvimento local;
+>   fluxos de publicação em produção estão no roadmap.
+
+### 3. Atualizar (quando sair versão nova)
+
+```
+/claude-for-idiots update
+```
+
+Atualiza a própria skill e — se o projeto atual foi configurado por ela — traz
+os guard-rails do projeto pra versão nova também, **mantendo todas as suas
+escolhas**. Ele te conta o que mudou antes de tocar em qualquer coisa.
+
+---
+
 ## O que é isso? (em palavras simples)
 
 Você está construindo algo com o Claude Code, mas:
@@ -76,63 +135,6 @@ commits a cada feature — então eles precisam render mais do que custam.
 Regra de bolso: **se o projeto ainda vai importar daqui a duas semanas, liga; se
 é descartável, não liga.** É também por isso que ela só roda quando você invoca
 explicitamente.
-
-## Como usar
-
-### 1. Instalar (uma vez)
-
-**Requisitos:** Python 3 e [Claude Code](https://claude.com/claude-code).
-
-**macOS / Linux**
-```bash
-git clone https://github.com/JulioBarbosaS/Claude-For-Idiots.git
-cp -r Claude-For-Idiots ~/.claude/skills/claude-for-idiots
-```
-
-**Windows (PowerShell)**
-```powershell
-git clone https://github.com/JulioBarbosaS/Claude-For-Idiots.git
-Copy-Item -Recurse Claude-For-Idiots "$env:USERPROFILE\.claude\skills\claude-for-idiots"
-```
-
-Depois reinicie o Claude Code pra ele reconhecer a nova skill.
-
-### 2. Ligar — de forma explícita
-
-Numa sessão do Claude Code, rode:
-
-```
-/claude-for-idiots
-```
-
-**Ela só roda quando você pede — de propósito.** Nem todo projeto deve ser
-embrulhado nesses guard-rails: um script descartável e rápido, ou um projeto que
-já existe e tem suas próprias convenções, geralmente é melhor deixar em paz. Por
-isso a skill **nunca assume o controle sozinha** — você liga ela, por projeto,
-quando realmente quer.
-
-Depois de ligada, ela faz algumas perguntas rápidas — seu idioma, seu nível de
-experiência, se deve usar termos técnicos, e o que você quer construir — e prepara
-tudo pra aquele projeto.
-
-> **Atenção:**
-> - A configuração guiada leva **~10 minutos** (medido no Opus 4.8) — ela faz as
->   perguntas, escolhe a stack, instala as ferramentas e escreve os guard-rails.
-> - **Iniciantes:** rodem o Claude Code em **auto mode** (aceitação automática de
->   permissões) durante o setup, pra não serem interrompidos por prompt de
->   permissão a cada passo.
-> - **Ainda não testada para deploy** — a skill cobre o desenvolvimento local;
->   fluxos de publicação em produção estão no roadmap.
-
-### 3. Atualizar (quando sair versão nova)
-
-```
-/claude-for-idiots update
-```
-
-Atualiza a própria skill e — se o projeto atual foi configurado por ela — traz
-os guard-rails do projeto pra versão nova também, **mantendo todas as suas
-escolhas**. Ele te conta o que mudou antes de tocar em qualquer coisa.
 
 ## O que ele melhora
 
