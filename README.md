@@ -38,6 +38,24 @@ So I built this to keep Claude **on the rails**. And while I was at it, I made i
 friendly enough that someone with **zero coding background** can use Claude
 comfortably too.
 
+## What can I build with it?
+
+The skill knows how to pick an architecture for these project types:
+
+| What you want to build | Stack it recommends |
+|---|---|
+| Website / web app | Next.js (React + TypeScript) |
+| Simple static / content site | Astro or plain HTML + CSS + JS |
+| REST API or backend service | FastAPI (Python) or NestJS (TypeScript) |
+| Full-stack app (UI + API + DB) | Next.js + Postgres (via Prisma) |
+| Mobile app (iOS + Android) | Flutter |
+| CLI tool / automation script | Python (Typer) or Node (Commander) |
+| Data analysis / ML prototype | Python (pandas / scikit-learn / notebooks) |
+| Discord / Telegram bot | Python or Node |
+| Desktop app | Tauri or Electron |
+
+Advanced users can always choose their own stack — the catalog is just the default.
+
 ## Should you use it on your project?
 
 Honest answer: **not always.** The guard-rails cost something — tests, checks
@@ -59,13 +77,21 @@ explicitly.
 
 ### 1. Install (once)
 
+**Requirements:** Python 3 and [Claude Code](https://claude.com/claude-code).
+
+**macOS / Linux**
 ```bash
 git clone https://github.com/JulioBarbosaS/Claude-For-Idiots.git
 cp -r Claude-For-Idiots ~/.claude/skills/claude-for-idiots
 ```
 
-Then restart Claude Code so it picks up the new skill. (The hooks need `python3`
-available on your machine.)
+**Windows (PowerShell)**
+```powershell
+git clone https://github.com/JulioBarbosaS/Claude-For-Idiots.git
+Copy-Item -Recurse Claude-For-Idiots "$env:USERPROFILE\.claude\skills\claude-for-idiots"
+```
+
+Then restart Claude Code so it picks up the new skill.
 
 ### 2. Turn it on — explicitly
 
@@ -146,7 +172,7 @@ skill is open.
 ```
 SKILL.md                     # the skill's brain (onboarding + behavior)
 references/                  # editable data — extend the skill here
-  rules.md                   #   the 6 rules (source of truth)
+  rules.md                   #   the 9 rules (source of truth)
   stack-catalog.md           #   objective → stack
   architecture-catalog.md    #   stack → idiomatic architecture
   onboarding-flow.md         #   the questions
