@@ -42,6 +42,24 @@ Então criei isso pra manter o Claude **na linha**. E, já que estava nisso, dei
 amigável o suficiente pra que alguém com **zero experiência em programação**
 também consiga usar o Claude tranquilamente.
 
+## O que posso construir com isso?
+
+A skill sabe escolher uma arquitetura para esses tipos de projeto:
+
+| O que você quer construir | Stack recomendada |
+|---|---|
+| Site / web app | Next.js (React + TypeScript) |
+| Site estático / conteúdo simples | Astro ou HTML + CSS + JS puro |
+| API REST ou serviço de backend | FastAPI (Python) ou NestJS (TypeScript) |
+| App completo (UI + API + banco) | Next.js + Postgres (via Prisma) |
+| App mobile (iOS + Android) | Flutter |
+| Ferramenta de linha de comando / automação | Python (Typer) ou Node (Commander) |
+| Análise de dados / protótipo de ML | Python (pandas / scikit-learn / notebooks) |
+| Bot de Discord / Telegram | Python ou Node |
+| App desktop | Tauri ou Electron |
+
+Usuários avançados podem sempre escolher a própria stack — o catálogo é só o padrão.
+
 ## Devo usar no meu projeto?
 
 Resposta honesta: **nem sempre.** Os guard-rails têm custo — testes, checagens e
@@ -63,13 +81,21 @@ explicitamente.
 
 ### 1. Instalar (uma vez)
 
+**Requisitos:** Python 3 e [Claude Code](https://claude.com/claude-code).
+
+**macOS / Linux**
 ```bash
 git clone https://github.com/JulioBarbosaS/Claude-For-Idiots.git
 cp -r Claude-For-Idiots ~/.claude/skills/claude-for-idiots
 ```
 
-Depois reinicie o Claude Code pra ele reconhecer a nova skill. (Os hooks precisam
-do `python3` disponível na sua máquina.)
+**Windows (PowerShell)**
+```powershell
+git clone https://github.com/JulioBarbosaS/Claude-For-Idiots.git
+Copy-Item -Recurse Claude-For-Idiots "$env:USERPROFILE\.claude\skills\claude-for-idiots"
+```
+
+Depois reinicie o Claude Code pra ele reconhecer a nova skill.
 
 ### 2. Ligar — de forma explícita
 
@@ -154,7 +180,7 @@ até em sessões longas — não só enquanto a skill está aberta.
 ```
 SKILL.md                     # o cérebro da skill (onboarding + comportamento)
 references/                  # dados editáveis — estenda a skill aqui
-  rules.md                   #   as 6 regras (fonte da verdade)
+  rules.md                   #   as 9 regras (fonte da verdade)
   stack-catalog.md           #   objetivo → stack
   architecture-catalog.md    #   stack → arquitetura idiomática
   onboarding-flow.md         #   as perguntas
